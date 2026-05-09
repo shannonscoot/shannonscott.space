@@ -178,6 +178,43 @@ section.big-image {
 }
 
 /* =========================================
+   ABOUT — contact info
+   ========================================= */
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 12px 0;
+}
+
+.ss-contact {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #000;
+  text-decoration: none;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.ss-contact:hover {
+  opacity: 0.6;
+}
+
+.ss-contact i {
+  font-size: 14px;
+  width: 16px;
+  flex-shrink: 0;
+}
+
+.fixed-column p {
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* =========================================
    IMAGE GRIDS
    ========================================= */
 
