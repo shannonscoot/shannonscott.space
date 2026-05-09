@@ -2,6 +2,7 @@
    Shannon Scott — Portfolio CSS
    ========================================= */
 
+/* --- Base & Reset --- */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -71,26 +72,29 @@ a:hover {
 }
 
 .site-title {
-  font-size: 46px;
+  font-size: clamp(18px, 3vw, 46px);
   font-weight: 400;
   letter-spacing: -1px;
   text-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);
+  white-space: nowrap;
 }
 
 .center-title {
-  font-size: 46px;
+  font-size: clamp(18px, 3vw, 46px);
   text-align: center;
   font-weight: 400;
+  white-space: nowrap;
 }
 
 .right-title {
-  font-size: 46px;
+  font-size: clamp(18px, 3vw, 46px);
   text-align: right;
   font-weight: 400;
+  white-space: nowrap;
 }
 
 .meta {
-  font-size: 11px;
+  font-size: clamp(8px, 1vw, 11px);
   margin-left: 8px;
   vertical-align: super;
 }
@@ -109,12 +113,7 @@ a:hover {
 /* Header responsive */
 @media (max-width: 800px) {
   .top-header {
-    padding: 12px 18px;
-  }
-  .site-title,
-  .center-title,
-  .right-title {
-    font-size: 18px;
+    padding: 12px 24px;
   }
   .header-line {
     top: 58px;
@@ -123,15 +122,10 @@ a:hover {
 
 @media (max-width: 480px) {
   .top-header {
-    padding: 8px 12px;
-  }
-  .site-title,
-  .center-title,
-  .right-title {
-    font-size: 14px;
+    padding: 10px 16px;
   }
   .header-line {
-    top: 40px;
+    top: 48px;
   }
 }
 
@@ -377,4 +371,3 @@ footer {
   padding: 24px;
   margin-top: 48px;
 }
-
