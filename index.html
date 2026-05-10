@@ -12,22 +12,33 @@
             <div class="site-title"><a href="about.html">Shannon Scott <span class="meta">[ ABOUT ]</span></a></div>
             <div class="center-title"><a href="projects.html">Projects <span class="meta">[ CV ]</span></a></div>
             <div class="right-title"><a href="art.html">Artworks <span class="meta">[ SERIES ]</span></a></div>
+        <button class="hamburger" id="hamburger" aria-label="Open menu">
+            <span></span><span></span><span></span>
+        </button>
         </div>
         <div class="header-line" aria-hidden="true"></div>
     </header>
-
+    <nav class="mobile-nav" id="mobile-nav">
+        <a href="about.html">Shannon Scott <span class="meta">[ ABOUT ]</span></a>
+        <a href="projects.html">Projects <span class="meta">[ CV ]</span></a>
+        <a href="art.html">Artworks <span class="meta">[ SERIES ]</span></a>
+    </nav>
+ 
     <main>
         <section class="big-image">
             <img src="images/vortex2.webp" alt="Featured work by Shannon Scott" class="big-image">
+            <div class="hero-overlay">
+                <p>Design is a living system that shapes how we move, feel, and connect—from urban grids to digital interfaces to the spaces we inhabit every day. Inspired by the logic of nature, I create work that balances structure with flow, grounding each project in clarity, purpose, and human experience.</p>
+            </div>
         </section>
-
+ 
         <section class="hero-image">
             <a href="stoop.html" class="project-link">
                 <img src="images/LiminalBodies_COLLAGE_Final.png" alt="Liminal Bodies"></a>
             <a href="stoop.html" class="project-link">
                 <img src="images/Bronzeville Stoop3.png" alt="Bronzeville Stoop"></a>
             <a href="stoop.html" class="project-link">
-                <img src="images/Ramp_L_FINISH.png" alt="Bronzeville Stoop ramp perspective"></a>
+                <img src="images/Bronzeville Stoop Ramp Perspective.png" alt="Bronzeville Stoop ramp perspective"></a>
             <a href="stoop.html" class="project-link">
                 <img src="images/Bronzeville Stoop 2.png" alt="Bronzeville Stoop view 2"></a>
             <a href="stoop.html" class="project-link">
@@ -56,9 +67,24 @@
                 <img src="images/circus exterior day.png" alt="Circus exterior day"></a>
         </section>
     </main>
-
+ 
     <footer>
         <p>&copy; Shannon Scott 2026. All rights reserved.</p>
     </footer>
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const mobileNav = document.getElementById('mobile-nav');
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('open');
+            mobileNav.classList.toggle('open');
+        });
+        // Close when a nav link is clicked
+        mobileNav.querySelectorAll('a').forEach(function(link) {
+            link.addEventListener('click', function() {
+                hamburger.classList.remove('open');
+                mobileNav.classList.remove('open');
+            });
+        });
+    </script>
 </body>
 </html>

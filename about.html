@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shannon Scott</title>
+    <title>Shannon Scott — About</title>
     <link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     <header>
@@ -13,35 +13,62 @@
             <div class="site-title"><a href="index.html">Shannon Scott <span class="meta">[ ABOUT ]</span></a></div>
             <div class="center-title"><a href="projects.html">Projects <span class="meta">[ CV ]</span></a></div>
             <div class="right-title"><a href="art.html">Artworks <span class="meta">[ SERIES ]</span></a></div>
+        <button class="hamburger" id="hamburger" aria-label="Open menu">
+            <span></span><span></span><span></span>
+        </button>
         </div>
-        
         <div class="header-line" aria-hidden="true"></div>
     </header>
-<main>
-    <div class="split-layout">
-        <div class="split-container">
-            <aside class="fixed-column">
-                <img src="images/Shannon Scott Headshot2.jpeg" alt="Shannon Scott">
-                <a href="mailto:ss.shannonscott@gmail.com" class="ss-contact"><i class="fa-regular fa-envelope ss-email"></i></a>
-                ss.shannonscott@gmail.com
-                <br>
-                <a href="mailto:7185819262" class="ss-contact"><i class="fa-solid fa-phone ss-phone"></i></a>
-                718.581.9262
-                <br>
-                    <p>Design is a living system that shapes how we move, feel, and connect—from urban grids to digital interfaces to the spaces we inhabit every day. Inspired by the logic of nature, I create work that balances structure with flow, grounding each project in clarity, purpose, and human experience.
-                    </br> At its core, the work is about relationships: between people and place, the built and the natural, and imagination and lived experience. Through this lens, design becomes a form of storytelling—inviting engagement and fostering a sense of belonging.</p>
-            
-            
+    <nav class="mobile-nav" id="mobile-nav">
+        <a href="about.html">Shannon Scott <span class="meta">[ ABOUT ]</span></a>
+        <a href="projects.html">Projects <span class="meta">[ CV ]</span></a>
+        <a href="art.html">Artworks <span class="meta">[ SERIES ]</span></a>
+    </nav>
+
+    <main>
+        <div class="split-layout">
+            <div class="split-container">
+                <aside class="fixed-column">
+                    <img src="images/Shannon Scott Headshot2.jpeg" alt="Shannon Scott">
+
+                    <div class="contact-info">
+                        <a href="mailto:ss.shannonscott@gmail.com" class="ss-contact">
+                            <i class="fa-regular fa-envelope"></i> ss.shannonscott@gmail.com
+                        </a>
+                        <a href="tel:7185819262" class="ss-contact">
+                            <i class="fa-solid fa-phone"></i> 718.581.9262
+                        </a>
+                    </div>
+
+                    <p>Shannon Scott is a designer working across space, image, and form, grounded in a deep connection to nature, ecology, and community. Her work moves between architecture, visual art, and conceptual design, exploring how space shapes human experience.</p>
+                    <p>She approaches each project as a living system—where light, material, movement, and texture are composed to shape how a space is felt as much as how it functions.</p>
+                    <p>At its core, the work is about relationships: between people and place, the built and the natural, and imagination and lived experience. Through this lens, design becomes a form of storytelling—inviting engagement and fostering a sense of belonging.</p>
                 </aside>
-            <div class="scrolling-column">
-                    <img src="images/Copy of Shannon Scott Resume 2025.png" alt="Shannon Scott">
-                </section>
+
+                <div class="scrolling-column">
+                    <img src="images/Copy of Shannon Scott Resume 2025.png" alt="Shannon Scott Resume">
+                </div>
             </div>
         </div>
-    </div>
-</main>
+    </main>
+
     <footer>
         <p>&copy; Shannon Scott 2026. All rights reserved.</p>
     </footer>
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const mobileNav = document.getElementById('mobile-nav');
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('open');
+            mobileNav.classList.toggle('open');
+        });
+        // Close when a nav link is clicked
+        mobileNav.querySelectorAll('a').forEach(function(link) {
+            link.addEventListener('click', function() {
+                hamburger.classList.remove('open');
+                mobileNav.classList.remove('open');
+            });
+        });
+    </script>
 </body>
 </html>
