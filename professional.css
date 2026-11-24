@@ -98,3 +98,41 @@ body.original {
   font-family:Georgia,"Times New Roman",serif;
 }
 .skill-list strong{font-family:Arial,Helvetica,sans-serif}
+
+/* Experience: dates and role headlines stay visible, with context on demand. */
+.atlas-about .about-exploration { max-width: 53ch; }
+.experience-timeline {
+  --date-width: 8.5rem; --timeline-gap: 2rem;
+  position: relative; list-style: none; margin: 0; padding: 0;
+}
+.experience-timeline::before {
+  content: ""; position: absolute; inset-block: .75rem 1.75rem;
+  left: calc(var(--date-width) + (var(--timeline-gap) / 2)); border-left: 1px solid #c9b9c2;
+}
+.atlas-about .experience-timeline .resume-entry {
+  position: relative; display: grid; grid-template-columns: var(--date-width) minmax(0,1fr);
+  gap: var(--timeline-gap); border: 0; padding: .3rem 0 1.2rem;
+}
+.experience-timeline .resume-entry::before {
+  content: ""; position: absolute; top: .72rem;
+  left: calc(var(--date-width) + (var(--timeline-gap) / 2) - 3px);
+  width: 7px; height: 7px; border-radius: 50%; background: var(--red);
+}
+.experience-timeline .resume-date { padding-top: .18rem; }
+.experience-timeline .timeline-role h3 {
+  font-size: clamp(1.05rem, 1.65vw, 1.4rem); margin-bottom: .26rem;
+}
+.experience-timeline .role-details { margin-top: .2rem; }
+.experience-timeline .role-details summary {
+  width: fit-content; padding: .28rem 0; font-size: .77rem; color: var(--muted); cursor: pointer;
+}
+.experience-timeline .role-details summary:hover { text-decoration: underline; }
+.experience-timeline .role-details summary:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+.experience-timeline .role-details p { max-width: 60ch; margin-top: .35rem; }
+@media (max-width: 850px) {
+  .experience-timeline { padding-left: 1.25rem; }
+  .experience-timeline::before { left: 3px; inset-block-end: 2.5rem; }
+  .atlas-about .experience-timeline .resume-entry { grid-template-columns: 1fr; gap: .22rem; }
+  .experience-timeline .resume-entry::before { left: -1.25rem; }
+  .experience-timeline .resume-date { padding-top: 0; }
+}

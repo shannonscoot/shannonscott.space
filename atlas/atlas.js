@@ -110,10 +110,10 @@ function closePanel() {
   lastFocus?.focus({preventScroll:true});
 }
 document.addEventListener('click',event=>{
-  const a=event.target.closest('a[data-site]');
+  const a=event.target.closest('.pin[data-site]');
   if(a && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey){
     event.preventDefault();
-    if(!dragged)select(a.dataset.site,picker.contains(a));
+    if(!dragged)select(a.dataset.site);
   } else if(!picker.contains(event.target))picker.open=false;
 });
 document.querySelector('#close').onclick=closePanel;
