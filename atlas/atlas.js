@@ -9,7 +9,7 @@ const zones = [...field.querySelectorAll('.region')];
 const diagrams = [
   [144,276,184,316], [325,266,381,309], [647,388,691,432],
   [235,553,384,624], [949,529,993,556], [1149,339,1193,358],
-  [822,326,893,368], [771,752,859,783]
+  [822,326,893,368], [771,752,859,783], [697,456,744,472], [617,660,694,716]
 ];
 const svgNS = 'http://www.w3.org/2000/svg';
 const leaders = document.createElementNS(svgNS,'svg');
@@ -17,11 +17,6 @@ leaders.setAttribute('viewBox','0 0 1250 815');
 leaders.setAttribute('aria-hidden','true');
 leaders.classList.add('pin-leaders');
 field.prepend(leaders);
-const stagger = {
-  'bronzeville-stoop': 15, rundle: -23, peachy: -22, tend: 21,
-  'social-circus': 0, kizik: 3, chanel: 14, wesbuilt: -4,
-  'artists-house': 7, convene: 9, platform: 2
-};
 const markerLines = pins.map(pin => {
   const line = document.createElementNS(svgNS,'line');
   const dot = document.createElementNS(svgNS,'circle');
@@ -41,12 +36,11 @@ let oldWidth,oldHeight;
 let lastLayout = '';
 const clamp = (v,min,max) => Math.min(max,Math.max(min,v));
 const compact = () => map.clientWidth <= 1100;
-const thumbWidth = () => clamp(map.clientWidth*.163,51,100);
 function fitScale() {
   const w=map.clientWidth,h=map.clientHeight;
   if(!compact())return Math.min(w/1250,h/815);
   // Fit the inhabited area with space for thumbnail edges and the map controls.
-  return Math.max(.14, Math.min((w-thumbWidth()-18)/940,(h-92)/675));
+  return Math.max(.14, Math.min((w-20)/1100,(h-92)/675));
 }
 function layoutMarkers() {
   const isCompact=compact();
@@ -54,10 +48,7 @@ function layoutMarkers() {
   if(layoutKey===lastLayout)return;
   lastLayout=layoutKey;
   field.classList.toggle('compact-markers',isCompact);
-  const markerScale=isCompact?Math.max(1,thumbWidth()/(132*scale)):1;
-  const spread=clamp((map.clientWidth-320)/350,.65,1);
-  const settle=isCompact?clamp((.78-scale)/.34,0,1):0;
-  const margin=Math.max(4,3/scale);
+  const margin=isCompact ? 14 : Math.max(4,3/scale);
   const protectedAreas=diagrams.concat(zones.map(zone=>{
     const {offsetLeft:x,offsetTop:y,offsetWidth:w,offsetHeight:h}=zone;
     return [x-w/2,y-h/2,x+w/2,y+h/2];
@@ -67,16 +58,15 @@ function layoutMarkers() {
   const overview=Math.abs(scale-fitScale())<.000001;
   const fitX=overview?Math.max(0,(1250-map.clientWidth/scale)/2):0;
   const fitY=overview?Math.max(0,(815-map.clientHeight/scale)/2):0;
-  field.style.setProperty('--marker-scale',markerScale);
   const metrics=markerLines.map(item=>({...item,w:item.pin.offsetWidth,h:item.pin.offsetHeight}));
   const intersects=(a,b)=>a[0]<b[2]+margin && a[2]>b[0]-margin && a[1]<b[3]+margin && a[3]>b[1]-margin;
   const used=[];
   for(const {pin,spot,line,dot,w,h} of metrics){
-    const preferredY=spot.y+(stagger[pin.dataset.site]??0)*spread*settle/scale;
+    const preferredY=spot.y;
     const obstacles=protectedAreas.concat(used);
     let choice;
     for(const size of [1,.94,.88,.82,.76]){
-      const half=w*markerScale*size/2, up=h*markerScale*size*.77, down=h*markerScale*size*.23;
+      const half=w*size/2, up=h*size*.77, down=h*size*.23;
       const minX=fitX+half, maxX=1250-fitX-half, minY=fitY+up, maxY=815-fitY-down;
       const xs=new Set([clamp(spot.x,minX,maxX)]), ys=new Set([clamp(preferredY,minY,maxY)]);
       for(const [l,t,r,b] of obstacles){
@@ -91,11 +81,14 @@ function layoutMarkers() {
       }
       if(choice)break;
     }
-    if(!choice)choice={x:spot.x,y:preferredY,size:1};
-    if(choice.bounds)used.push(choice.bounds);
+    if(!choice){
+      const bottom=Math.max(...obstacles.map(area=>area[3]))+margin+1;
+      choice={x:spot.x,y:bottom+h*.77,size:1,bounds:[spot.x-w/2,bottom,spot.x+w/2,bottom+h]};
+    }
+    used.push(choice.bounds);
     pin.style.setProperty('--marker-offset-x',(choice.x-spot.x)+'px');
     pin.style.setProperty('--marker-offset-y',(choice.y-spot.y)+'px');
-    pin.style.setProperty('--marker-size',markerScale*choice.size);
+    pin.style.setProperty('--marker-size',choice.size);
     line.setAttribute('x2',choice.x);
     line.setAttribute('y2',choice.y);
     line.style.opacity=dot.style.opacity=Math.hypot(choice.x-spot.x,choice.y-spot.y)*scale<4?0:1;
@@ -117,10 +110,11 @@ function center(px,py) {
   y=map.clientHeight/2-py*scale;
   paint();
 }
-function reset() {
+function reset(fullOverview=false) {
   fitted=true;
   scale=fitScale();
-  center(625,407.5);
+  if(compact() && !fullOverview)scale=Math.max(scale,Math.min(.95,Math.max(.48,map.clientWidth/800),map.clientHeight/640));
+  center(640,407.5);
 }
 function zoom(value,cx,cy) {
   fitted=false;
@@ -169,7 +163,7 @@ document.addEventListener('keydown',event=>{
 for(const [id,factor] of [['plus',1.3],['minus',1/1.3]]) {
   document.getElementById(id).onclick=()=>zoom(scale*factor,map.clientWidth/2,map.clientHeight/2);
 }
-document.querySelector('#fit').onclick=()=>{closePanel();reset();};
+document.querySelector('#fit').onclick=()=>{closePanel();reset(true);};
 function point(event) {
   const box=map.getBoundingClientRect();
   return {x:event.clientX-box.left,y:event.clientY-box.top};
