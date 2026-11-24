@@ -1,0 +1,88 @@
+*{box-sizing:border-box}body{margin:0;color:#211c20;background:#f7f4ed;font:15px Arial,Helvetica,sans-serif}a,summary,button{color:inherit;cursor:pointer}a{text-decoration:none}a:hover,summary:hover{text-shadow:1px 2px 6px #b57290}header{height:60px;display:flex;align-items:center;padding:0 3vw;gap:20px;background:#faf8f1;border-bottom:1px solid #847d74;position:relative;z-index:5}.brand{font-size:23px;font-weight:650;letter-spacing:-.075em}header>span,small,.controls{font:11px monospace}nav{display:flex;align-items:center;gap:24px;margin-left:auto}summary{list-style:none}summary:after{content:' +'}details[open] summary:after{content:' −'}details div{position:absolute;right:3vw;top:53px;width:min(320px,94vw);background:#faf8f1;border:1px solid;padding:10px 16px;box-shadow:4px 4px #211c201a;max-height:75svh;overflow:auto}details div a{display:block;padding:8px;border-bottom:1px solid #ddd6cb}main{position:relative}.map{position:relative;height:calc(100svh - 60px);min-height:310px;overflow:hidden;touch-action:none;background:#e7e4db;cursor:grab}.map.dragging{cursor:grabbing}.field{width:1250px;height:815px;position:absolute;transform-origin:0 0;background:url(land.svg) center/cover;user-select:none}.title,.compass,.tools{position:absolute}.title{top:18px;left:3vw;pointer-events:none;background:#faf8f1ed;border-left:3px solid #db488a;padding:8px 16px 10px}.title h1{font:clamp(28px,3.2vw,54px)/1 Georgia,serif;letter-spacing:-.065em;margin:0}.title p{font:11px monospace;margin:7px 0 0}.compass{right:3vw;top:20px;text-align:center;font:12px monospace}.compass span{display:block;font:36px Georgia}.tools{right:3vw;bottom:18px;display:flex;box-shadow:2px 2px #211c2026}.tools button{padding:10px 13px;font:13px monospace;background:#faf8f1;border:1px solid #837b73}.tools button+button{border-left:none}.tools button:hover{background:#ffc3dc}.pin{position:absolute;display:flex;flex-direction:column;align-items:center;transform:translate(-50%,-55%);min-width:60px;outline-offset:3px}.pin span{font:600 16px/1.2 Arial,sans-serif;letter-spacing:-.035em;white-space:nowrap;background:#faf8f1e8;padding:2px 6px;border-bottom:1px solid #bb7794}.pin:is(:hover,:focus-visible,.selected) span{background:#ffaacb}.region,.river{position:absolute;color:#716b61;font:italic 23px Georgia;letter-spacing:.05em;pointer-events:none}.north{left:325px;top:95px}.west{left:105px;top:525px}.east{left:955px;top:430px}.river{left:685px;top:460px;transform:rotate(-70deg);font-size:15px}
+aside{position:absolute;bottom:22px;left:3vw;width:min(345px,92vw);border:1px solid;background:#faf8f1;box-shadow:5px 5px #342b2a30;max-height:75%;overflow:auto}aside img{width:100%;height:135px;object-fit:cover;display:block}aside [hidden],aside[hidden]{display:none}.copy{padding:15px}.copy h2{font:32px/1 Georgia;margin:7px 0}.copy p{font-size:14px;line-height:1.4;margin:10px 0}.copy a{display:inline-block;background:transparent;border:1px solid;padding:8px 12px}.copy small{text-transform:uppercase;letter-spacing:.1em}#close{position:absolute;right:6px;top:6px;background:#faf8f1;border:1px solid;width:32px;height:32px;font-size:22px}
+@media(max-width:650px){header{gap:10px}header>span{display:none}nav{gap:15px}.title p{font-size:10px}.title{top:12px}.compass{top:10px}aside{bottom:62px}.copy p{max-height:6em;overflow:auto}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* Photo markers and their site labels. */
+.pin{transform:translate(-50%,-77%)}
+.pin .snapshot{width:132px;height:79px;display:block;object-fit:cover;padding:2px;background:#faf8f1;border:1px solid #c4779a;transition:transform .2s, box-shadow .2s}
+
+
+.pin span{position:relative}
+.pin:is(:hover,:focus-visible,.selected){z-index:2}
+.pin:is(:hover,:focus-visible,.selected) .snapshot{transform:translateY(-2px) scale(1.1)}
+@media(prefers-reduced-motion:reduce){.pin .snapshot{transition:none}}
+
+body{min-height:100svh;display:flex;flex-direction:column}
+header{flex:none}
+main{display:flex;flex-direction:column;height:calc(100svh - 60px)}
+.title{position:static;display:flex;align-items:baseline;gap:18px;padding:10px 3vw;border:0;border-bottom:1px solid #bdb7af;background:#faf8f1;flex:none}
+.title h1{font-size:32px}.title p{margin:0}
+.map{flex:1;min-height:0;height:auto}
+.region{transform:translate(-50%,-50%);white-space:nowrap;font-size:26px;text-shadow:0 1px 3px #faf8f1}
+details div h2{font:600 18px Georgia,serif;margin:9px 0 3px;padding-bottom:4px;border-bottom:1px solid #bdb4a6}
+details div h3{font:600 10px Arial,sans-serif;text-transform:uppercase;letter-spacing:.12em;color:#665f57;margin:7px 0 1px}
+details div{overscroll-behavior:contain;max-height:min(75svh,570px)}
+#close,.tools button{min-width:44px;min-height:44px}
+.pin:has(>span:only-child){min-height:60px;justify-content:center}
+@media(max-width:1024px),(pointer:coarse){details div a,nav> a,summary,#visit{display:flex;align-items:center;min-height:44px}details div{max-height:calc(100svh - 80px)}}
+@media(max-width:650px){.title{gap:12px}.title h1{font-size:26px}.title p{max-width:22ch}.tools{bottom:max(10px,env(safe-area-inset-bottom))}aside{bottom:64px;max-height:calc(100% - 76px);overscroll-behavior:contain}.map{min-height:0}}
+.pin span,.pin:is(:hover,:focus-visible,.selected) span{background:#faf8f1e8;border:0;text-shadow:none}
+.pin:is(:hover,:focus-visible) .snapshot{box-shadow:1px 2px 9px #b5729090}
+.pin:is(:hover,:focus-visible) span{text-shadow:1px 2px 6px #b57290}
+
+.map {
+  background: #f7f4ed url("terrain.svg") no-repeat;
+}
+.field { background: url("land.svg") center / 100% 100% no-repeat; }
+.compass { color: #211c20; }
+
+header nav { margin-left: 0; }
+header .identity { display: flex; align-items: center; gap: 16px; margin-left: auto; }
+header .identity span { font: 11px monospace; }
+header .brand { white-space: nowrap; color: #000; }
+header .logo { display: inline-flex; flex: none; }
+header .logo img {
+  width: 26px;
+  height: 26px;
+  mix-blend-mode: multiply;
+}
+#index > div {
+  left: 3vw;
+  right: auto;
+  padding: 6px 13px 10px;
+  border: 1px solid #a49d93;
+  background: #faf8f1;
+  box-shadow: 0 2px 5px #211c2019;
+}
+.index-projects { margin: 0; padding-left: 17px; }
+.index-projects li::marker { color: #716b61; }
+#index .index-projects a {
+  display: block;
+  min-height: 0;
+  padding: 4px 0;
+  border: 0;
+  color: #665f57;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 13px;
+  line-height: 1.25;
+}
+#index > div::-webkit-scrollbar { width: 11px; }
+#index > div::-webkit-scrollbar-track { background: #f7f4ed; border-left: 1px solid #bdb4a6; }
+#index > div::-webkit-scrollbar-thumb { background: #e7e1d6; border: 1px solid #a49d93; border-radius: 0; }
+#index > div::-webkit-scrollbar-thumb:hover { background: #d9d0c2; }
+@supports not selector(::-webkit-scrollbar) {
+  #index > div { scrollbar-width: thin; scrollbar-color: #a49d93 #f7f4ed; }
+}
+@media (pointer: coarse) {
+  #index .index-projects a { padding-block: 8px; }
+}
+@media (max-width: 650px) { header .identity span { display: none; } }
+@media (max-width: 360px) {
+  header { gap: 6px; }
+  header .brand { font-size: 19px; }
+  header .logo img { width: 22px; height: 22px; }
+  header nav { gap: 10px; }
+}
+#visit { background: #ffc0da; }
+#index h3 { font-family: Georgia, "Times New Roman", serif; }

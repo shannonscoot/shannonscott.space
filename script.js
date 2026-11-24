@@ -1,0 +1,5 @@
+const tabs=document.querySelectorAll('[data-filter]');
+tabs.forEach(button=>button.addEventListener('click',()=>{tabs.forEach(b=>b.setAttribute('aria-pressed',String(b===button)));document.querySelectorAll('[data-group]').forEach(group=>group.hidden=button.dataset.filter!=='all'&&group.dataset.group!==button.dataset.filter)}));
+document.querySelectorAll('nav a[href*="#"]').forEach(a=>a.addEventListener('click',()=>{document.querySelectorAll('[data-group]').forEach(g=>g.hidden=false);tabs.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.filter==='all')))}));
+const dialog=document.querySelector('#lightbox');let lastFocus;
+if(dialog){document.querySelectorAll('.image-open').forEach(button=>button.addEventListener('click',()=>{lastFocus=button;const source=button.querySelector('img'),target=dialog.querySelector('img');target.src=source.src;target.alt=source.alt;dialog.showModal()}));dialog.querySelector('.close').addEventListener('click',()=>dialog.close());dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close()});dialog.addEventListener('close',()=>lastFocus?.focus())}
