@@ -5,15 +5,16 @@
   color: #211c20; font: 15px/1.25 Arial, Helvetica, sans-serif;
 }
 .site-header .site-brand {
-  display: inline-flex; align-items: center; gap: 10px; flex: none; color: #000;
-  font-size: 23px; letter-spacing: -.075em; white-space: nowrap;
+  flex: none; color: #000; font-size: 23px; font-weight: 650;
+  letter-spacing: -.075em; white-space: nowrap; text-align: right;
 }
-.site-header .site-brand strong { font-weight: 650; }
-.site-header .site-brand img { display: block; width: 26px; height: 26px; mix-blend-mode: multiply; }
+.site-header .site-logo { display: inline-flex; flex: none; }
+.site-header .site-logo img { display: block; width: 26px; height: 26px; mix-blend-mode: multiply; }
+.site-header .site-identity { display: flex; flex: none; align-items: center; gap: 16px; margin-left: auto; }
 .site-header .site-discipline { font: 11px monospace; white-space: nowrap; }
 .site-header nav {
   display: flex; flex: none; flex-wrap: nowrap; align-items: center; gap: 24px;
-  margin-left: auto; font: inherit;
+  margin-left: 0; font: inherit;
 }
 .site-header a { text-decoration: none; }
 .site-header nav a::after { content: none; }
@@ -26,7 +27,7 @@
 .site-header summary::after { content: '+'; }
 .site-header details[open] summary::after { content: '−'; }
 .site-header #index > div {
-  position: absolute; top: 53px; left: auto; right: 3vw;
+  position: absolute; top: 53px; left: 3vw; right: auto;
   width: min(320px, 94vw); max-height: min(570px, calc(100svh - 70px));
   padding: 6px 13px 10px; overflow: auto; overscroll-behavior: contain;
   border: 1px solid #a49d93; background: #faf8f1; box-shadow: 0 2px 5px #211c2019;
@@ -55,6 +56,6 @@
   .site-header { gap: 8px; }
   .site-header .site-discipline { display: none; }
   .site-header nav { gap: clamp(8px, 3vw, 15px); font-size: clamp(11px, 3.5vw, 15px); }
-  .site-header .site-brand { gap: 6px; font-size: clamp(18px, 5.4vw, 23px); }
-  .site-header .site-brand img { width: 22px; height: 22px; }
+  .site-header .site-brand { font-size: clamp(18px, 5.4vw, 23px); }
+  .site-header .site-logo img { width: 22px; height: 22px; }
 }
