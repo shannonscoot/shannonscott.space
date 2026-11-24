@@ -87,12 +87,12 @@ header .logo img {
 #visit { background: #ffc0da; }
 #index h3 { font-family: Georgia, "Times New Roman", serif; }
 
-.pin-leaders { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; display: none; }
-.compact-markers .pin-leaders { display: block; }
+.pin-leaders { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 .pin-leaders line { stroke: #756a62; stroke-width: 1; vector-effect: non-scaling-stroke; }
 .pin-leaders circle { fill: #756a62; stroke: #faf8f1; stroke-width: .8; vector-effect: non-scaling-stroke; }
-.compact-markers .pin {
+.field .pin {
   transform-origin: 0 0;
-  transform: translateY(var(--marker-offset, 0px)) scale(var(--marker-scale, 1)) translate(-50%, -77%);
+  transform: translate(var(--marker-offset-x, 0px), var(--marker-offset-y, 0px)) scale(var(--marker-size, 1)) translate(-50%, -77%);
 }
 .compact-markers .pin span { max-width: 140px; text-align: center; white-space: normal; }
+.pin:is(:hover,:focus-visible,.selected) .snapshot { transform: none; }

@@ -4,6 +4,13 @@ const panel = document.querySelector('aside');
 const picker = document.querySelector('#index');
 const photo = document.querySelector('#photo');
 const pins = [...field.querySelectorAll('.pin')];
+const zones = [...field.querySelectorAll('.region')];
+// Bounds of the hand-drawn diagrams in land.svg (in map units).
+const diagrams = [
+  [144,276,184,316], [325,266,381,309], [647,388,691,432],
+  [235,553,384,624], [949,529,993,556], [1149,339,1193,358],
+  [822,326,893,368], [771,752,859,783]
+];
 const svgNS = 'http://www.w3.org/2000/svg';
 const leaders = document.createElementNS(svgNS,'svg');
 leaders.setAttribute('viewBox','0 0 1250 815');
@@ -31,6 +38,7 @@ const markerLines = pins.map(pin => {
 const pointers = new Map();
 let scale, x, y, active, lastFocus, dragged = false, gesture, fitted = true;
 let oldWidth,oldHeight;
+let lastLayout = '';
 const clamp = (v,min,max) => Math.min(max,Math.max(min,v));
 const compact = () => map.clientWidth <= 1100;
 const thumbWidth = () => clamp(map.clientWidth*.163,51,100);
@@ -42,17 +50,55 @@ function fitScale() {
 }
 function layoutMarkers() {
   const isCompact=compact();
+  const layoutKey=[map.clientWidth,map.clientHeight,scale].join(':');
+  if(layoutKey===lastLayout)return;
+  lastLayout=layoutKey;
   field.classList.toggle('compact-markers',isCompact);
-  if(!isCompact)return;
-  const markerScale=Math.max(1,thumbWidth()/(132*scale));
+  const markerScale=isCompact?Math.max(1,thumbWidth()/(132*scale)):1;
   const spread=clamp((map.clientWidth-320)/350,.65,1);
-  const settle=clamp((.78-scale)/.34,0,1);
+  const settle=isCompact?clamp((.78-scale)/.34,0,1):0;
+  const margin=Math.max(4,3/scale);
+  const protectedAreas=diagrams.concat(zones.map(zone=>{
+    const {offsetLeft:x,offsetTop:y,offsetWidth:w,offsetHeight:h}=zone;
+    return [x-w/2,y-h/2,x+w/2,y+h/2];
+  }));
+  // At overview size keep every marker in the viewport. On zoom, use the
+  // map limits instead so dragging never changes a card's map position.
+  const overview=Math.abs(scale-fitScale())<.000001;
+  const fitX=overview?Math.max(0,(1250-map.clientWidth/scale)/2):0;
+  const fitY=overview?Math.max(0,(815-map.clientHeight/scale)/2):0;
   field.style.setProperty('--marker-scale',markerScale);
-  for(const {pin,spot,line,dot} of markerLines){
-    const offset=(stagger[pin.dataset.site]??0)*spread*settle/scale;
-    pin.style.setProperty('--marker-offset',offset+'px');
-    line.setAttribute('y2',spot.y+offset);
-    line.style.opacity=dot.style.opacity=Math.abs(offset*scale)<4?0:1;
+  const metrics=markerLines.map(item=>({...item,w:item.pin.offsetWidth,h:item.pin.offsetHeight}));
+  const intersects=(a,b)=>a[0]<b[2]+margin && a[2]>b[0]-margin && a[1]<b[3]+margin && a[3]>b[1]-margin;
+  const used=[];
+  for(const {pin,spot,line,dot,w,h} of metrics){
+    const preferredY=spot.y+(stagger[pin.dataset.site]??0)*spread*settle/scale;
+    const obstacles=protectedAreas.concat(used);
+    let choice;
+    for(const size of [1,.94,.88,.82,.76]){
+      const half=w*markerScale*size/2, up=h*markerScale*size*.77, down=h*markerScale*size*.23;
+      const minX=fitX+half, maxX=1250-fitX-half, minY=fitY+up, maxY=815-fitY-down;
+      const xs=new Set([clamp(spot.x,minX,maxX)]), ys=new Set([clamp(preferredY,minY,maxY)]);
+      for(const [l,t,r,b] of obstacles){
+        for(const x of [l-margin-half,r+margin+half])if(x>=minX&&x<=maxX)xs.add(x);
+        for(const y of [t-margin-down,b+margin+up])if(y>=minY&&y<=maxY)ys.add(y);
+      }
+      for(const x of xs)for(const y of ys){
+        const distance=(x-spot.x)**2*1.3+(y-preferredY)**2;
+        if(choice&&distance>=choice.distance)continue;
+        const bounds=[x-half,y-up,x+half,y+down];
+        if(!obstacles.some(area=>intersects(bounds,area)))choice={x,y,size,distance,bounds};
+      }
+      if(choice)break;
+    }
+    if(!choice)choice={x:spot.x,y:preferredY,size:1};
+    if(choice.bounds)used.push(choice.bounds);
+    pin.style.setProperty('--marker-offset-x',(choice.x-spot.x)+'px');
+    pin.style.setProperty('--marker-offset-y',(choice.y-spot.y)+'px');
+    pin.style.setProperty('--marker-size',markerScale*choice.size);
+    line.setAttribute('x2',choice.x);
+    line.setAttribute('y2',choice.y);
+    line.style.opacity=dot.style.opacity=Math.hypot(choice.x-spot.x,choice.y-spot.y)*scale<4?0:1;
   }
 }
 function paint() {
