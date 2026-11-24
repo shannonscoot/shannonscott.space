@@ -17,10 +17,16 @@ leaders.setAttribute('viewBox','0 0 1250 815');
 leaders.setAttribute('aria-hidden','true');
 leaders.classList.add('pin-leaders');
 field.prepend(leaders);
-const stagger = {
-  'bronzeville-stoop': 15, rundle: -23, peachy: -22, tend: 21,
-  'social-circus': 0, kizik: 3, chanel: 14, wesbuilt: -4,
-  'artists-house': 7, convene: 9, platform: 2
+// Positions within the available overview, ordered around the map's neighborhoods.
+const overviewSlots = {
+  'bronzeville-stoop': [.16,.08], rundle: [.33,.29], 'social-circus': [.72,.06],
+  peachy: [.84,.30], tend: [.92,.54], kizik: [.68,.69], chanel: [.94,.77],
+  wesbuilt: [.05,.46], 'artists-house': [.36,.58], convene: [.15,.86], platform: [.51,.94]
+};
+const wideSlots = {
+  'bronzeville-stoop': [.06,.14], rundle: [.31,.04], 'social-circus': [.56,.16],
+  peachy: [.77,.04], tend: [.95,.26], kizik: [.74,.53], chanel: [.97,.64],
+  wesbuilt: [.04,.60], 'artists-house': [.39,.52], convene: [.22,.89], platform: [.63,.90]
 };
 const markerLines = pins.map(pin => {
   const line = document.createElementNS(svgNS,'line');
@@ -40,8 +46,8 @@ let scale, x, y, active, lastFocus, dragged = false, gesture, fitted = true;
 let oldWidth,oldHeight;
 let lastLayout = '';
 const clamp = (v,min,max) => Math.min(max,Math.max(min,v));
-const compact = () => map.clientWidth <= 1100;
-const thumbWidth = () => clamp(map.clientWidth*.163,51,100);
+const compact = () => map.clientWidth <= 1100 || (matchMedia('(pointer: coarse)').matches && map.clientWidth <= 1400);
+const thumbWidth = () => clamp(Math.min(map.clientWidth*.218,map.clientHeight*.26),54,148);
 function fitScale() {
   const w=map.clientWidth,h=map.clientHeight;
   if(!compact())return Math.min(w/1250,h/815);
@@ -55,8 +61,9 @@ function layoutMarkers() {
   lastLayout=layoutKey;
   field.classList.toggle('compact-markers',isCompact);
   const markerScale=isCompact?Math.max(1,thumbWidth()/(132*scale)):1;
-  const spread=clamp((map.clientWidth-320)/350,.65,1);
-  const settle=isCompact?clamp((.78-scale)/.34,0,1):0;
+  const fit=fitScale();
+  const pull=isCompact?clamp(2-scale/fit,0,1):0;
+  const slots=map.clientWidth>map.clientHeight?wideSlots:overviewSlots;
   const margin=Math.max(4,3/scale);
   const protectedAreas=diagrams.concat(zones.map(zone=>{
     const {offsetLeft:x,offsetTop:y,offsetWidth:w,offsetHeight:h}=zone;
@@ -64,34 +71,43 @@ function layoutMarkers() {
   }));
   // At overview size keep every marker in the viewport. On zoom, use the
   // map limits instead so dragging never changes a card's map position.
-  const overview=Math.abs(scale-fitScale())<.000001;
-  const fitX=overview?Math.max(0,(1250-map.clientWidth/scale)/2):0;
-  const fitY=overview?Math.max(0,(815-map.clientHeight/scale)/2):0;
+  const fitX=(1250-map.clientWidth/fit)/2;
+  const fitY=(815-map.clientHeight/fit)/2;
+  const left=pull*(fitX+10/fit), right=1250-left;
+  const top=pull*(fitY+10/fit), bottom=815-pull*(fitY+58/fit);
+  leaders.style.overflow='visible';
   field.style.setProperty('--marker-scale',markerScale);
   const metrics=markerLines.map(item=>({...item,w:item.pin.offsetWidth,h:item.pin.offsetHeight}));
   const intersects=(a,b)=>a[0]<b[2]+margin && a[2]>b[0]-margin && a[1]<b[3]+margin && a[3]>b[1]-margin;
+  if(pull===1){
+    const compass=map.querySelector('.compass');
+    protectedAreas.push([fitX+compass.offsetLeft/fit,fitY,
+      fitX+(compass.offsetLeft+compass.offsetWidth)/fit,fitY+(compass.offsetTop+compass.offsetHeight)/fit]);
+  }
   const used=[];
   for(const {pin,spot,line,dot,w,h} of metrics){
-    const preferredY=spot.y+(stagger[pin.dataset.site]??0)*spread*settle/scale;
     const obstacles=protectedAreas.concat(used);
     let choice;
     for(const size of [1,.94,.88,.82,.76]){
       const half=w*markerScale*size/2, up=h*markerScale*size*.77, down=h*markerScale*size*.23;
-      const minX=fitX+half, maxX=1250-fitX-half, minY=fitY+up, maxY=815-fitY-down;
-      const xs=new Set([clamp(spot.x,minX,maxX)]), ys=new Set([clamp(preferredY,minY,maxY)]);
+      const minX=left+half, maxX=right-half, minY=top+up, maxY=bottom-down;
+      const [u,v]=slots[pin.dataset.site] || [.5,.5];
+      const preferredX=spot.x+pull*(minX+u*(maxX-minX)-spot.x);
+      const preferredY=spot.y+pull*(minY+v*(maxY-minY)-spot.y);
+      const xs=new Set([clamp(preferredX,minX,maxX)]), ys=new Set([clamp(preferredY,minY,maxY)]);
       for(const [l,t,r,b] of obstacles){
         for(const x of [l-margin-half,r+margin+half])if(x>=minX&&x<=maxX)xs.add(x);
         for(const y of [t-margin-down,b+margin+up])if(y>=minY&&y<=maxY)ys.add(y);
       }
       for(const x of xs)for(const y of ys){
-        const distance=(x-spot.x)**2*1.3+(y-preferredY)**2;
+        const distance=(x-preferredX)**2*1.3+(y-preferredY)**2;
         if(choice&&distance>=choice.distance)continue;
         const bounds=[x-half,y-up,x+half,y+down];
         if(!obstacles.some(area=>intersects(bounds,area)))choice={x,y,size,distance,bounds};
       }
       if(choice)break;
     }
-    if(!choice)choice={x:spot.x,y:preferredY,size:1};
+    if(!choice)choice={x:spot.x,y:spot.y,size:1};
     if(choice.bounds)used.push(choice.bounds);
     pin.style.setProperty('--marker-offset-x',(choice.x-spot.x)+'px');
     pin.style.setProperty('--marker-offset-y',(choice.y-spot.y)+'px');
