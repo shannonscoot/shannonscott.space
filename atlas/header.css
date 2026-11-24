@@ -1,0 +1,60 @@
+.site-header {
+  position: relative; z-index: 5; display: flex; flex: none; flex-direction: row;
+  justify-content: flex-start; align-items: center; gap: 16px; height: 60px;
+  padding: 0 3vw; border-bottom: 1px solid #847d74; background: #faf8f1;
+  color: #211c20; font: 15px/1.25 Arial, Helvetica, sans-serif;
+}
+.site-header .site-brand {
+  display: inline-flex; align-items: center; gap: 10px; flex: none; color: #000;
+  font-size: 23px; letter-spacing: -.075em; white-space: nowrap;
+}
+.site-header .site-brand strong { font-weight: 650; }
+.site-header .site-brand img { display: block; width: 26px; height: 26px; mix-blend-mode: multiply; }
+.site-header .site-discipline { font: 11px monospace; white-space: nowrap; }
+.site-header nav {
+  display: flex; flex: none; flex-wrap: nowrap; align-items: center; gap: 24px;
+  margin-left: auto; font: inherit;
+}
+.site-header a { text-decoration: none; }
+.site-header nav a::after { content: none; }
+.site-header nav a:hover, .site-header summary:hover { color: #665f57; text-decoration: underline; }
+.site-header summary, .site-header .site-about {
+  display: flex; align-items: center; gap: 3px; min-height: 44px;
+  list-style: none; cursor: pointer; white-space: nowrap;
+}
+.site-header summary::-webkit-details-marker { display: none; }
+.site-header summary::after { content: '+'; }
+.site-header details[open] summary::after { content: '−'; }
+.site-header #index > div {
+  position: absolute; top: 53px; left: auto; right: 3vw;
+  width: min(320px, 94vw); max-height: min(570px, calc(100svh - 70px));
+  padding: 6px 13px 10px; overflow: auto; overscroll-behavior: contain;
+  border: 1px solid #a49d93; background: #faf8f1; box-shadow: 0 2px 5px #211c2019;
+}
+.site-header #index h2 {
+  font: 600 18px Georgia, "Times New Roman", serif; letter-spacing: normal;
+  margin: 9px 0 3px; padding: 0 0 4px; border-bottom: 1px solid #bdb4a6;
+}
+.site-header .index-projects { margin: 0; padding-left: 17px; }
+.site-header .index-projects li { padding: 0; }
+.site-header .index-projects li::marker { color: #716b61; }
+.site-header #index .index-projects a {
+  display: block; min-height: 0; padding: 4px 0; border: 0;
+  color: #665f57; font: 13px/1.25 Georgia, "Times New Roman", serif;
+}
+.site-header #index > div::-webkit-scrollbar { width: 11px; }
+.site-header #index > div::-webkit-scrollbar-track { background: #f7f4ed; border-left: 1px solid #bdb4a6; }
+.site-header #index > div::-webkit-scrollbar-thumb { background: #e7e1d6; border: 1px solid #a49d93; }
+@supports not selector(::-webkit-scrollbar) {
+  .site-header #index > div { scrollbar-width: thin; scrollbar-color: #a49d93 #f7f4ed; }
+}
+@media (pointer: coarse) {
+  .site-header #index .index-projects a { padding-block: 8px; }
+}
+@media (max-width: 650px) {
+  .site-header { gap: 8px; }
+  .site-header .site-discipline { display: none; }
+  .site-header nav { gap: clamp(8px, 3vw, 15px); font-size: clamp(11px, 3.5vw, 15px); }
+  .site-header .site-brand { gap: 6px; font-size: clamp(18px, 5.4vw, 23px); }
+  .site-header .site-brand img { width: 22px; height: 22px; }
+}
