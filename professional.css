@@ -59,7 +59,7 @@
 .atlas-about .resume-list{border-top:0}
 @media(min-width:621px){
   .atlas-about .about-page > figure{min-height:clamp(280px,38vw,550px)}
-  .atlas-about .about-page > figure > img{position:absolute;inset:0;height:100%;max-height:none;object-position:center 35%}
+  .atlas-about .about-page > figure > img{position:absolute;inset:0;height:100%;max-height:none;object-fit:cover;object-position:center 8%}
 }
 
 /* One seamless contour field under the entire editorial layout. */
