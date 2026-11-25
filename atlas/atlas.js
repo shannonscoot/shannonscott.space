@@ -40,8 +40,8 @@ function fitScale() {
   const w=map.clientWidth,h=map.clientHeight;
   if(!compact())return Math.min(w/1250,h/815);
   // Use the phone overview framing as the initial fit, with room around the thumbnails.
-  const overview = Math.min(.95, Math.max(.48, w/800), h/640);
-  return Math.max(.14, Math.min(overview, (w-20)/800, (h-92)/675));
+  const overview = Math.min(.95, Math.max(.48, w/700), h/600);
+  return Math.max(.14, Math.min(overview, (w-20)/680, (h-92)/675));
 }
 function layoutMarkers() {
   const isCompact=compact();
@@ -49,6 +49,17 @@ function layoutMarkers() {
   if(layoutKey===lastLayout)return;
   lastLayout=layoutKey;
   field.classList.toggle('compact-markers',isCompact);
+  if(isCompact){
+    for(const {pin,spot,line,dot} of markerLines){
+      pin.style.setProperty('--marker-offset-x','0px');
+      pin.style.setProperty('--marker-offset-y','0px');
+      pin.style.setProperty('--marker-size','1');
+      line.setAttribute('x2',spot.x);
+      line.setAttribute('y2',spot.y);
+      line.style.opacity=dot.style.opacity=0;
+    }
+    return;
+  }
   const margin=isCompact ? 14 : Math.max(4,3/scale);
   const protectedAreas=diagrams.concat(zones.map(zone=>{
     const {offsetLeft:x,offsetTop:y,offsetWidth:w,offsetHeight:h}=zone;
