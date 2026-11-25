@@ -62,7 +62,7 @@
   .atlas-about .about-page > figure > img{position:absolute;inset:0;height:100%;max-height:none;object-fit:cover;object-position:center 8%}
 }
 @media(max-width:620px){
-  .atlas-about .about-page > figure > img{position:static;width:100%;height:auto;max-height:none;object-fit:contain;object-position:center top}
+  .atlas-about .about-page > figure > img{position:static;width:100%;height:auto;max-height:none;object-fit:contain;object-position:center top;transform:translateY(44px);margin-bottom:44px}
 }
 
 /* One seamless contour field under the entire editorial layout. */
