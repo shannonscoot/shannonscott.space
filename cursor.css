@@ -1,3 +1,8 @@
+:root {
+  --hover-glow-text: 0 0 4px #ff77b6b0, 0 0 10px #e83e8c85;
+  --hover-glow-image: 0 0 0 1px #ef76a9, 0 0 12px 2px #ed459f75;
+}
+
 @media (hover: hover) and (pointer: fine) {
   :root {
     --circle-cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='5.5' fill='none' stroke='white' stroke-width='2.5'/%3E%3Ccircle cx='8' cy='8' r='5.5' fill='none' stroke='%23181518' stroke-width='1.2'/%3E%3C/svg%3E") 8 8, auto;
@@ -5,4 +10,10 @@
   }
   body, body * { cursor: var(--drafting-cursor) !important; }
   body:active, body:active *, body:has(.map.dragging) * { cursor: var(--circle-cursor) !important; }
+  :is(a,button,summary,p,h1,h2,h3,h4,figcaption,dt,dd,.region,small,span,li):hover,
+  :is(a,button,summary):focus-visible,
+  html .pin:is(:hover,:focus-visible,.selected) span { text-shadow: var(--hover-glow-text); }
+  img:hover, :is(a,button):focus-visible img,
+  html .pin:is(:hover,:focus-visible,.selected) .snapshot { box-shadow: var(--hover-glow-image); }
+  .region { pointer-events: auto; }
 }

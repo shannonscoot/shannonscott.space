@@ -26,8 +26,6 @@
 @media(pointer:fine){
   body,a,button,.image-open,.close{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='%23000000' width='16' height='16' viewBox='0 0 10.04 10.04'%3E%3Ccircle cx='5.02' cy='5.02' r='4.52'/%3E%3C/svg%3E") 8 8,auto}
   a,button{transition:text-shadow .2s ease}
-  a:hover,button:hover{text-shadow:rgba(0,0,0,.725) 0 6px 12px}
-  .about-strip a:hover,.next a:hover{text-shadow:rgba(255,255,255,.6) 0 6px 12px}
 }
 @media(max-width:620px){.professional-grid,.resume-section,.skill-grid{grid-template-columns:1fr}.professional-grid{gap:28px}.professional-card .card-title{min-height:0}.resume-section{padding:35px 5vw 44px;gap:24px}.resume-entry h3{font-size:23px}.professional-card .card-title span{flex-basis:30%}}
 .art-feature {display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);align-items:center;gap:6vw;padding:48px 5vw;border-top:1px solid var(--line)}
@@ -81,7 +79,6 @@ body.original {
 .original .tabs button[aria-pressed=true] {border-bottom-color: #ed459d}
 .original .pill:hover {background: #95165b}
 .original .next {border-top: 1px solid var(--line)}
-.original .next a:hover {text-shadow: 0 6px 12px #0005}
 .original .gallery figure, .original .professional-gallery figure {background: transparent!important}
 .original footer {padding: 12px 5vw; gap: 10px; font-size: 13px}
 .original footer > span {width: auto}

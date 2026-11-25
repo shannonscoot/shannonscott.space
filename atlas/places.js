@@ -33,7 +33,7 @@ const places = {
     "description": "The second floors of 555 and 557 Broadway were transformed into a unified hospitality destination for Convene within the landmarked Scholastic Building in SoHo. As AOR, the adaptive reuse project translated the design vision into a coordinated, code-compliant meetings and events venue while preserving the building’s historic character. New vertical circulation, a redesigned ground-floor lobby, and enhanced connections between the two buildings created a seamless arrival experience.",
     "photo": "convene-1.webp",
     "x": 318,
-    "y": 719
+    "y": 739
   },
   "artists-house": {
     "title": "Artist’s House",
