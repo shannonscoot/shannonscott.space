@@ -39,8 +39,9 @@ const compact = () => map.clientWidth <= 1100;
 function fitScale() {
   const w=map.clientWidth,h=map.clientHeight;
   if(!compact())return Math.min(w/1250,h/815);
-  // Fit the inhabited area with space for thumbnail edges and the map controls.
-  return Math.max(.14, Math.min((w-20)/1100,(h-92)/675));
+  // Use the phone overview framing as the initial fit, with room around the thumbnails.
+  const overview = Math.min(.95, Math.max(.48, w/800), h/640);
+  return Math.max(.14, Math.min(overview, (w-20)/800, (h-92)/675));
 }
 function layoutMarkers() {
   const isCompact=compact();
@@ -113,7 +114,7 @@ function center(px,py) {
 function reset(fullOverview=false) {
   fitted=true;
   scale=fitScale();
-  if(compact() && !fullOverview)scale=Math.max(scale,Math.min(.95,Math.max(.48,map.clientWidth/800),map.clientHeight/640));
+
   center(640,407.5);
 }
 function zoom(value,cx,cy) {
