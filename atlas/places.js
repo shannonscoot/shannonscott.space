@@ -49,7 +49,7 @@ const places = {
     "group": "Academic",
     "category": "Performing Arts",
     "description": "A cross-cultural performing arts center that explores movement as a shared language. Set within a proposal for waterfront revitalization, the project invites people of different ages and backgrounds to learn, train, and perform. Radial portal frames create large open spans around a courtyard; stormwater management, daylight, and acoustics shape the building’s geometry.",
-    "photo": "social-circus-interior.webp",
+    "photo": "social-circus-night.webp",
     "x": 575,
     "y": 401
   },
